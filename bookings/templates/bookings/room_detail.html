@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+ {% block content %}
+ <h1>{{ room.code }} — {{ room.name }}</h1>
+ <p>ความจุ: {{ room.capacity }}</p>
+ <p>ชั ่วโมงรวม: {{ room.total_hours }} | ชั ่วโมงว่าง: {{ room.available_hours }}</p>
+ <p>สถานะ: {{ room.is_open|yesno:"เปิด,ปิด" }}</p>
+ {% if user.is_authenticated %}
+  {% if has_booked %}
+ <p class="text-success">คุณได้จองห้องนี้แล้ว</p>
+  {% elif not room.is_open or room.available_hours <= 0 %}
+ <p class="text-danger">ไม่สามารถจองได้ขณะนี้</p>
+  {% else %}
+ <form method="post" action="{% url 'book_room' room.pk %}">
+      {% csrf_token %}
+ <button type="submit" class="btn btn-success">จอง 1 ชั ่วโมง</button>
+ </form>
+  {% endif %}
+ {% else %}
+ <p>กรุณา <a href="{% url 'login' %}">เข้าสู ่ระบบ</a> เพื ่อจอง</p>
+ {% endif %}
+ <a href="/">กลับ</a>
+ {% endblock %}

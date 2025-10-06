@@ -3,5 +3,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('reservations.urls')),   # เชื่อม app reservations
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('bookings.urls')),
 ]

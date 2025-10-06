@@ -1,0 +1,18 @@
+ {% extends 'base.html' %}
+ {% block content %}
+ <h1>รายชื ่อผู้จองแยกตามห้อง (สาหรับ Admin)</h1>
+ {% for room in rooms %}
+ <div class="card mb-3">
+ <div class="card-header">{{ room.code }} — {{ room.name }} (ชั ่วโมงว่าง: 
+{{ room.available_hours }})</div>
+ <ul class="list-group list-group-flush">
+      {% for b in room.bookings.all %}
+ <li class="list-group-item">{{ b.user.username }} — จองเมื ่อ 
+{{ b.created_at }}</li>
+      {% empty %}
+ <li class="list-group-item">ยังไม่มีผู้จอง</li>
+      {% endfor %}
+ </ul>
+ </div>
+ {% endfor %}
+ {% endblock %}

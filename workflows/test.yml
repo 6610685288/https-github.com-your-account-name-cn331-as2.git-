@@ -1,0 +1,38 @@
+name: Django Tests (on testing branch)
+
+on:
+  push:
+    branches:
+      - testing
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run migrations
+        env:
+          DJANGO_SECRET_KEY: testingsecret
+        run: |
+          python manage.py migrate --noinput
+
+      - name: Run tests
+        run: |
+          python -m pip install -r requirements.txt
+          python manage.py test --verbosity=2

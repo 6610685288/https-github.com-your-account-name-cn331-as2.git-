@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+<h2 class="mb-4">My Bookings</h2>
+<table class="table table-striped shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Room</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.room.name }}</td>
+                <td>{{ booking.date }}</td>
+                <td>
+                    <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-sm btn-danger">Cancel</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">You have no bookings.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
